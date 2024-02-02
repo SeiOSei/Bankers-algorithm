@@ -32,7 +32,6 @@ public class bankers_algo {
         }
 
         int available = totalResources - totalOfAllocations;
-
         int rtrn = 0;
         while (available < totalResources) {
             for (Map.Entry<String, int[]> entry : jobs.entrySet()) {
