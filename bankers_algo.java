@@ -1,10 +1,13 @@
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class bankers_algo {
     public static void main(String[] args) {
         Map<String, int[]> jobs = new HashMap<>();
+        Set<String> processedJobs = new HashSet<>();
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter total resources: ");
@@ -35,6 +38,10 @@ public class bankers_algo {
             for (Map.Entry<String, int[]> entry : jobs.entrySet()) {
                 String jobName = entry.getKey();
                 int[] values = entry.getValue();
+                if (processedJobs.contains(jobName)) {
+                    // Skip already processed job
+                    continue;
+                }
                 if (available < values[2]) {
                     // Do nothing
                 } else if (available < 0) {
@@ -55,8 +62,10 @@ public class bankers_algo {
                     available += values[1];
 
                     System.out.printf("%-5s %-5s %-5d %-5d%n", jobName + " exit", "", rtrn, available);
+                    processedJobs.add(jobName);
+                    System.out.println("Safe State");
                 }
-            }
+            } 
         }
-    }        
-}
+    }
+}        
