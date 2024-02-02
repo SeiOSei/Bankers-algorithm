@@ -21,7 +21,6 @@ public class bankers_algo {
             int maxAllocation = scanner.nextInt();
             int jobNeed = maxAllocation - allocation;
             jobs.put(name, new int[]{allocation, maxAllocation, jobNeed});
-            scanner.close();
         }
 
         int totalOfAllocations = 0;
