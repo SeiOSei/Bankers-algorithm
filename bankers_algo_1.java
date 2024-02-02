@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-public class bankers_algo {
+public class bankers_algo_1 {
     public static void main(String[] args) {
         Map<String, int[]> jobs = new HashMap<>();
         Set<String> processedJobs = new HashSet<>();
@@ -32,7 +32,7 @@ public class bankers_algo {
         }
 
         int available = totalResources - totalOfAllocations;
-        while (available < totalResources) {
+        while (!processedJobs.containsAll(jobs.keySet())) {
             for (Map.Entry<String, int[]> entry : jobs.entrySet()) {
                 String jobName = entry.getKey();
                 int[] values = entry.getValue();
@@ -41,28 +41,32 @@ public class bankers_algo {
                     continue;
                 }
                 if (available < values[2]) {
-                    // Do nothing
+                    // Do nothing, not enough resources for this job
                 } else if (available < 0) {
                     available -= values[2];
                     System.out.printf("%-5s %-5d %-5s %-5d%n", jobName, values[2], "", available);
-                    values[1]=0 ;
+                    values[1] = 0;
                     available += values[1];
 
                     System.out.printf("%-5s %-5s %-5d %-5d%n", jobName + " exit", "", values[1], available);
-                    System.out.print("Unsafe State: Resource Deadlock");
+                    System.out.println("Unsafe State: Resource Deadlock");
                     return;
                 } else {
                     available -= values[2];
                     System.out.printf("%-5s %-5d %-5s %-5d%n", jobName, values[2], "", available);
 
-                    int rtrn = values[1];
-                    available += values[1];
+                    int returnedResources = values[1];
+                    available += returnedResources;
 
-                    System.out.printf("%-5s %-5s %-5d %-5d%n", jobName + " exit", "", rtrn, available);
+                    System.out.printf("%-5s %-5s %-5d %-5d%n", jobName + " exit", "", returnedResources, available);
                     processedJobs.add(jobName);
                     System.out.println("Safe State");
+
+                    if (!processedJobs.containsAll(jobs.keySet())) {
+                        break;
+                    }
                 }
-            } 
+            }
         }
     }
-}       
+}
