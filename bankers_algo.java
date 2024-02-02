@@ -31,29 +31,32 @@ public class bankers_algo {
         int available = totalResources - totalOfAllocations;
 
         int rtrn = 0;
+        while (available < totalResources) {
+            for (Map.Entry<String, int[]> entry : jobs.entrySet()) {
+                String jobName = entry.getKey();
+                int[] values = entry.getValue();
+                if (available < values[2]) {
+                    // Do nothing
+                } else if (available < 0) {
+                    available -= values[2];
+                    System.out.printf("%-5s %-5d %-5s %-5d%n", jobName, values[2], "", available);
+                    values[1]=0 ;
+                    rtrn = values[1];
+                    available += values[1];
 
-        if (totalOfAllocations > totalResources) {
-            System.out.print("Unsafe State: Resource Deadlock");
-            return;
-        } else { 
-            while (available < totalResources) {
-                for (Map.Entry<String, int[]> entry : jobs.entrySet()) {
-                    String jobName = entry.getKey();
-                    int[] values = entry.getValue();
-                    if (available < values[2]) {
-                        // Do nothing
-                    } else {
-                        available -= values[2];
-                        System.out.printf("%-5s %-5d %-5s %-5d%n", jobName, values[2], "", available);
+                    System.out.printf("%-5s %-5s %-5d %-5d%n", jobName + " exit", "", rtrn, available);
+                    System.out.print("Unsafe State: Resource Deadlock");
+                    return;
+                } else {
+                    available -= values[2];
+                    System.out.printf("%-5s %-5d %-5s %-5d%n", jobName, values[2], "", available);
 
-                        rtrn = values[1];
-                        available += values[1];
+                    rtrn = values[1];
+                    available += values[1];
 
-                        System.out.printf("%-5s %-5s %-5d %-5d%n", jobName + " exit", "", rtrn, available);
-                    }
+                    System.out.printf("%-5s %-5s %-5d %-5d%n", jobName + " exit", "", rtrn, available);
                 }
             }
-            
         }
-    }
+    }        
 }
